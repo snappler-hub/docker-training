@@ -9,6 +9,6 @@ RUN gem install bundler:2.1.4 && bundler install
 
 EXPOSE 9292
 
-CMD ["rackup"]
+CMD ["rackup", "--host", "0.0.0.0"]
 
 
