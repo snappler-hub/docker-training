@@ -82,3 +82,18 @@ docker run -it hello-docker:1.0 bash
 ```bash
 docker attach hello
 ```
+
+#### Otros comandos básicos
+```bash
+docker top [container]
+
+docker pause [container]
+docker unpause [container]
+
+docker stop [container]
+docker start [container]
+docker restart [container]
+
+docker image [subcommands]
+docker container [subcommand]
+```
