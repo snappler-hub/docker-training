@@ -23,13 +23,13 @@ module.exports = {
     ),
     new HtmlWebpackPlugin(
       {
-        template: path.resolve(__dirname, 'src', 'clase1', 'index.html'),
+        template: path.resolve(__dirname, 'src', 'class-1', 'index.html'),
         filename: 'clase1'
       }
     ),
     new HtmlWebpackPlugin(
       {
-        template: path.resolve(__dirname, 'src', 'clase2', 'index.html'),
+        template: path.resolve(__dirname, 'src', 'class-2', 'index.html'),
         filename: 'clase2'
       }
     )
