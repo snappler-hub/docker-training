@@ -1,7 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-
+ 
 module.exports = {
   mode: 'development',
   devtool: 'inline-source-map',
@@ -49,7 +49,11 @@ module.exports = {
         options: {
           name: '[name].[ext]?[hash]'
         }
-      }
+      },
+      {
+        test: /\\.css$/,
+        use: 'css-loader'
+      },
     ],
   }
 };

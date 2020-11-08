@@ -7,6 +7,9 @@ import Markdown from 'reveal.js/plugin/markdown/markdown.esm.js';
 import 'reveal.js/dist/reveal.css'
 import 'reveal.js/dist/theme/league.css'
 
+// Custom shared CSS.
+import './index.css'
+
 let deck = new Reveal({
    plugins: [ Markdown ]
 });
