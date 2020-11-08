@@ -24,18 +24,22 @@ module.exports = {
     new HtmlWebpackPlugin(
       {
         template: path.resolve(__dirname, 'src', 'class-1', 'index.html'),
-        filename: 'class-1'
+        filename: 'class-1.html'
       }
     ),
     new HtmlWebpackPlugin(
       {
         template: path.resolve(__dirname, 'src', 'class-2', 'index.html'),
-        filename: 'class-2'
+        filename: 'class-2.html'
       }
     )
   ],
   module: {
     rules: [
+      {
+        test: /\.html$/i,
+        loader: 'html-loader',
+      },
       {
         test: /\.css$/i,
         use: [
@@ -51,8 +55,10 @@ module.exports = {
         }
       },
       {
-        test: /\\.css$/,
-        use: 'css-loader'
+        test: /\.(png|svg|jpg|gif)$/,
+        use: [
+          'file-loader',
+        ],
       },
     ],
   }
