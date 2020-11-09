@@ -75,7 +75,7 @@
             <a href="https://hub.docker.com/">Docker Hub</a>
           </h4>
           <p>
-            Docker Hub es la principal plataforma de almacenamiento de imágenes de Docker adoptada por la comunidad.
+            Docker Hub es la principal plataforma de almacenamiento de imágenes de Docker adoptada por la comunidad. Es la registry por default.
           </p>
         </section>
         <section>
@@ -89,9 +89,20 @@
 
       <!-- Volúmenes -->
       <section>
-        <h2 class="fade-in-then-out">
+        <h2>
           <span style="text-decoration: line-through;">Volumes</span> Mounts
         </h2>
+        <section>
+          <p>
+            Como sabemos, los datos que se escriben dentro de un contenedor, se pierden cuando éste deja de existir.
+          </p>
+          <p class="fragment">
+            Docker nos provee formas de almacenar información fuera de un contenedor, montando parte de su filesystem de distintas maneras.
+          </p>
+          <p class="fragment">
+            Como analogía, podemos compararlo con las carpetas compartidas de VirtualBox o cualquier herramienta de virtualización similar.
+          </p>
+        </section>
         <section>
           <h4>
             <a href="https://docs.docker.com/storage/">Tipos de mount</a>
@@ -114,6 +125,7 @@
           <h4>
             <a href="https://docs.docker.com/storage/tmpfs/">TMPFS</a>
           </h4>
+          <h5>Solo Linux</h5>
           <img src="./images/volumes/types-of-mounts-tmpfs.png">
         </section>
       </section>
@@ -121,6 +133,22 @@
       <!-- Network -->
       <section>
         <h2>Network</h2>
+        <section>
+          <p>
+            Al correr un contenedor, podemos elegir el tipo de red que queremos que utilice.
+          </p>
+          <div class="fragment" style="text-align: left;">
+            <p>Existen distintos tipos de redes:</p>
+            <ul class="fragment">
+              <li>Bridge</li>
+              <li>None</li>
+              <li>Host</li>
+              <li class="disabled">Overlay</li>
+              <li class="disabled">Macvlan</li>
+              <li class="disabled">Plugins</li>
+            </ul>
+          </div>
+        </section>
         <section>
           <div>
             <img src="./images/network/bridge-cloud.png" width="250" height="150" style="margin: 0;">
@@ -145,6 +173,11 @@
             <img src="./images/network/docker-host-3.png" width="300" height="300" style="margin: 0;">
           </div>
         </section>
+      </section>
+
+      <!-- Practice -->
+      <section>
+        <h2>Práctica</h2>
       </section>
     </div>
   </div>
