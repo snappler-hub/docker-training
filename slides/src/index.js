@@ -10,8 +10,10 @@ import 'reveal.js/dist/theme/league.css'
 // Custom shared CSS.
 import './index.css'
 
-let deck = new Reveal({
-   plugins: [ Markdown ]
-});
-
-deck.initialize();
+window.onload = () => {
+   let deck = new Reveal({
+      plugins: [ Markdown ]
+   });
+   
+   deck.initialize();
+}
