@@ -26,7 +26,7 @@ Crear un volume
 ```
 docker volume create data
 
-docker run -v data:/app/data
+docker run -v data:/app/data -p 9292:9292 my-image
 ```
 
 #### Networks
