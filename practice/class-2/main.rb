@@ -4,6 +4,6 @@ require 'sinatra'
 
 class Main < Sinatra::Base
   get '/' do
-    'Hola Clase 2!'
+    File.read('./data/response.txt')
   end
 end
