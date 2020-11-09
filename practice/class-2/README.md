@@ -29,6 +29,16 @@ docker volume create data
 docker run -v data:/app/data -p 9292:9292 my-image
 ```
 
+Si no esta creado de antes se crea a demanda
+```
+docker run -v example:/app/data -p 9292:9292 my-image
+```
+
+Tambien se puede crear **anonymous** volumes
+```
+docker run -v /app/data -p 9292:9292 my-image
+```
+
 #### Networks
 
 Ver networks por defaults:
