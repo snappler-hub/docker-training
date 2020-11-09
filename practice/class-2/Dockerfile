@@ -5,9 +5,11 @@ RUN apt-get update && apt-get install -y dnsutils
 RUN mkdir -p /app
 WORKDIR /app
 
-COPY . ./
+COPY Gemfile Gemfile.lock ./
 
 RUN gem install bundler:2.1.4 && bundler install
+
+COPY . ./
 
 EXPOSE 9292
 

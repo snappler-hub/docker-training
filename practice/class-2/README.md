@@ -14,10 +14,15 @@ Crear un bind mount
 ```
 docker run -v $PWD/data:/app/data -p 9292:9292 my-image
 
+# Por qué no funciona con data2??
+docker run -v $PWD/data2:/app/data -p 9292:9292 my-image
+
 # Un ejemplo para persistir la data de mysql
 docker run -v $HOME/volumes/mysql:/var/lib/mysql -p 3306:3306 --env MYSQL_ROOT_PASSWORD=root mysql
 ```
 
+
+Crear un volume
 ```
 docker volume create data
 
