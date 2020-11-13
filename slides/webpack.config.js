@@ -1,7 +1,14 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
- 
+
+const newClassPage = (className) => {
+  return new HtmlWebpackPlugin({
+    template: path.resolve(__dirname, 'src', className, 'index.html'),
+    filename: `${className}.html`
+  })
+}
+
 module.exports = {
   mode: 'development',
   devtool: 'inline-source-map',
@@ -21,18 +28,9 @@ module.exports = {
         template: path.resolve(__dirname, 'src', 'index.html')
       }
     ),
-    new HtmlWebpackPlugin(
-      {
-        template: path.resolve(__dirname, 'src', 'class-1', 'index.html'),
-        filename: 'class-1.html'
-      }
-    ),
-    new HtmlWebpackPlugin(
-      {
-        template: path.resolve(__dirname, 'src', 'class-2', 'index.html'),
-        filename: 'class-2.html'
-      }
-    )
+    newClassPage('class-1'),
+    newClassPage('class-2'),
+    newClassPage('class-3')
   ],
   module: {
     rules: [
