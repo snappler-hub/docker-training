@@ -125,9 +125,26 @@
         </section>
       </section>
       <section>
-        <h4>Algunos comandos</h4>
-        <pre>
-        </pre>
+        <h4>Algunos <a href="https://docs.docker.com/compose/reference/">comandos</a></h4>
+          <pre><code data-trim data-noescape class="language-bash">
+            docker-compose ps
+
+            docker-compose exec
+
+            docker-compose start
+
+            docker-compose stop
+
+            docker-compose rm
+
+            # Usar flag -d para detached.
+            docker-compose up
+
+            # No borra los volumes.
+            # Para esto es necesario agregrar el flag --volumes
+            docker-compose down
+          </code></pre>
+        </ul>
       </section>
 
       <!-- Practice -->
