@@ -13,7 +13,7 @@
       <!-- Main slide -->
       <section>
         <h2>Docker Workshop</h2>
-        <h4>Clase 2</h4>
+        <h4>Clase 3</h4>
       </section>
 
       <!-- Agenda -->
@@ -25,17 +25,26 @@
         </ol>
       </section>
 
-      <!-- Repaso -->
+      <!-- Docker Compose -->
+      <section>
+        <h4>¿Qué es Docker Compose?</h4>
+        <ul>
+          <li>
+            Docker compose es una herramienta que permite definir y ejecutar múltiples contenedores de Docker.
+          </li>
+          <li class="fragment">
+            Cada contenedor de Docker, es lo que se conoce como <b style="color:aquamarine;">servicio</b> dentro de Docker Compose.
+          </li>
+          <li class="fragment">
+            Por defecto el archivo se llama docker-compose.yml, aunque puede especificarse para utilizar otro.
+          </li>
+        </ul>
+      </section>
+
       <section>
         <section>
-          <h4>¿Qué es Docker Compose?</h4>
-          <p>
-            Compose is a tool for defining and running multi-container Docker applications.
-          </p>
-        </section>
-        <section>
-          <h4>docker-compose.yml</h4>
-          <pre><code data-trim data-noescape>
+          <h4>Estructura básica del docker-compose.yml</h4>
+          <pre><code class="language-yaml" data-trim data-noescape data-noescape>
             version: "3"
 
             services:
@@ -46,10 +55,79 @@
           </code></pre>
         </section>
         <section>
-          <h4>Algunos comandos</h4>
-          <pre>
-          </pre>
+          <h4>Definiendo servicios</h4>
+          <pre><code class="language-yaml" data-trim data-noescape data-line-numbers="3|4|5-7|8-10|11">
+            version: "3"
+            services:
+              app:
+                build: . 
+                ports:
+                  - "3000:3000"
+                  - "5000:5000"
+                links:
+                  - redis:redisAlias
+              redis:
+                image: redis
+            volumes:
+            networks:
+          </code></pre>
         </section>
+        <section>
+          <h4><a href="https://docs.docker.com/compose/compose-file/#volumes">Agregamos volumes</a></h4>
+          <pre><code class="language-yaml" data-trim data-noescape data-line-numbers="8-10,15,16">
+            version: "3"
+            services:
+              app:
+                build: .
+                ports:
+                  - "3000:3000"
+                  - "5000:5000"
+                volumes:
+                  - .:/app
+                  - logvolume01:/var/log
+                links:
+                  - redis:redisAlias
+              redis:
+                image: redis
+            volumes:
+              logvolume01:
+            networks:
+          </code></pre>
+        </section>
+        <section>
+          <h4><a href="https://docs.docker.com/compose/networking/">Networking</a></h4>
+          <pre><code class="language-yaml" data-trim data-noescape data-line-numbers="13,14,17,18,21-24">
+            version: "3"
+            services:
+              app:
+                build: .
+                ports:
+                  - "3000:3000"
+                  - "5000:5000"
+                volumes:
+                  - .:/app
+                  - logvolume01:/var/log
+                links:
+                  - redis:redisAlias
+                networks:
+                  - network1
+              redis:
+                image: redis
+                networks:
+                  - network1
+            volumes:
+              - logvolume01:
+            networks:
+              - network1:
+                # Use a default or custom driver.
+                - driver: bridge
+          </code></pre>
+        </section>
+      </section>
+      <section>
+        <h4>Algunos comandos</h4>
+        <pre>
+        </pre>
       </section>
 
       <!-- Practice -->
@@ -59,7 +137,5 @@
     </div>
   </div>
 
-
 </body>
 </html>
-
