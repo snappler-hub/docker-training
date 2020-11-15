@@ -116,11 +116,42 @@
                 networks:
                   - network1
             volumes:
-              - logvolume01:
+              logvolume01:
             networks:
-              - network1:
+              network1:
                 # Use a default or custom driver.
-                - driver: bridge
+                driver: bridge
+          </code></pre>
+        </section>
+        <section>
+          <h4><a href="https://docs.docker.com/compose/environment-variables/">Variables de entorno</a></h4>
+          <pre><code class="language-yaml" data-trim data-noescape data-line-numbers="15,16">
+            version: "3"
+            services:
+              app:
+                build: .
+                ports:
+                  - "3000:3000"
+                  - "5000:5000"
+                volumes:
+                  - .:/app
+                  - logvolume01:/var/log
+                links:
+                  - redis:redisAlias
+                networks:
+                  - network1
+                environment:
+                  - RAILS_ENV=production
+              redis:
+                image: redis
+                networks:
+                  - network1
+            volumes:
+              logvolume01:
+            networks:
+              network1:
+                # Use a default or custom driver.
+                driver: bridge
           </code></pre>
         </section>
       </section>
