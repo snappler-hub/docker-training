@@ -1,0 +1,44 @@
+version: '3.4'
+
+services:
+  app:
+    image: backend:latest
+    build:
+      context: ./backend
+    environment:
+      MIGRATE: 'true'
+      DATABASE_HOST: database
+      DATABASE_NAME: database_name
+      DATABASE_USER: postgres
+      DATABASE_PASS: root
+
+      REDIS_URL: redis://redis:6379/1
+    ports:
+      - 3000:3000
+    networks:
+      - net1
+      - net2
+    depends_on:
+      - redis
+      - database
+
+  redis:
+    image: redis:6
+    networks:
+      - net1
+
+  database:
+    image: postgres:12.1
+    environment:
+      POSTGRES_PASSWORD: root
+    networks:
+      - net2
+    volumes:
+      - data_db:/var/lib/postgresql/data
+
+volumes:
+  data_db:
+
+networks:
+  net1:
+  net2:
