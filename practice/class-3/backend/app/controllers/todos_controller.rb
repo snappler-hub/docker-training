@@ -11,7 +11,7 @@ class TodosController < ApplicationController
     todo = Todo.new(message: params[:message])
 
     if todo.save
-      InvalidateCacheJob.perform_later(key: :todos)
+      Rails.cache.delete(:todos)
 
       render json: { data: todo }, status: :created
     else
