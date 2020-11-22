@@ -30,7 +30,8 @@ module.exports = {
     ),
     newClassPage('class-1'),
     newClassPage('class-2'),
-    newClassPage('class-3')
+    newClassPage('class-3'),
+    newClassPage('class-4')
   ],
   module: {
     rules: [

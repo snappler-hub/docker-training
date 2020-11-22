@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+    <title>Clase 4</title>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <!-- Main slide -->
+        <section>
+          <h2>Docker Workshop</h2>
+          <h4>Clase 4</h4>
+        </section>
+
+        <!-- Agenda -->
+        <section>
+          <h2>Agenda</h2>
+          <ol>
+            <li>Avanced Dockerfile</li>
+            <li>Multi-Stage Build</li>
+            <li>Práctica</li>
+          </ol>
+        </section>
+
+        <!-- Avanced Dockerfile -->
+        <section>
+          <section>
+            <h4>Avanced Dockerfile</h4>
+            <h5>ENV</h5>
+            <pre><code data-trim data-noescape class="language-dockerfile" data-line-numbers="9">
+              FROM ruby:2.7.1
+
+              WORKDIR /app
+
+              COPY . ./
+
+              RUN gem install bundler:2.1.4 && bundler install
+
+              ENV RACK_ENV production
+
+              CMD ["rackup", "--host", "0.0.0.0"]
+            </code></pre>
+          </section>
+          <section>
+            <h4>Avanced Dockerfile</h4>
+            <h5>ARG</h5>
+            <pre><code data-trim data-noescape class="language-dockerfile" data-line-numbers="3|11">
+              FROM ruby:2.7.1
+
+              ARG BUILD_MODE=production
+
+              WORKDIR /app
+
+              COPY . ./
+
+              RUN gem install bundler:2.1.4 && bundler install
+
+              ENV RACK_ENV $BUILD_MODE
+
+              CMD ["rackup", "--host", "0.0.0.0"]
+            </code></pre>
+            <pre><code data-trim data-noescape class="language-bash">
+              docker build --build-arg BUILD_MODE=staging .
+            </code></pre>
+          </section>
+          <section>
+            <h4>Avanced Dockerfile</h4>
+            <h5>ENTRYPOINT</h5>
+            <pre><code data-trim data-noescape class="language-dockerfile" data-line-numbers="9">
+              FROM ruby:2.7.1
+
+              WORKDIR /app
+
+              COPY . ./
+
+              RUN gem install bundler:2.1.4 && bundler install
+
+              ENTRYPOINT ["/app/entrypoint.sh"]
+
+              CMD ["rackup", "--host", "0.0.0.0"]
+            </code></pre>
+          </section>
+          <section>
+            <h4>Avanced Dockerfile</h4>
+            <h5>HEALTHCHECK</h5>
+            <pre><code data-trim data-noescape class="language-dockerfile" data-line-numbers="9-10|12|14">
+              FROM ruby:2.7.1
+
+              WORKDIR /app
+
+              COPY . ./
+
+              RUN gem install bundler:2.1.4 && bundler install
+
+              HEALTHCHECK --timeout=20s \
+                CMD curl --fail http://localhost:9292/ || exit 1
+
+              HEALTHCHECK CMD /app/healthcheck.sh
+
+              HEALTHCHECK NONE
+
+              CMD ["rackup", "--host", "0.0.0.0"]
+            </code></pre>
+            <pre><code data-trim data-noescape>
+              OPTIONS:
+              --interval=DURATION     (default: 30s)
+              --timeout=DURATION      (default: 30s)
+              --start-period=DURATION (default: 0s)
+              --retries=N             (default: 3)
+            </code></pre>
+          </section>
+          <section>
+            <h4>Avanced Dockerfile</h4>
+            <h5>VOLUME</h5>
+            <pre><code data-trim data-noescape class="language-dockerfile" data-line-numbers="9">
+              FROM ruby:2.7.1
+
+              WORKDIR /app
+
+              COPY . ./
+
+              RUN gem install bundler:2.1.4 && bundler install
+
+              VOLUME /var/log
+
+              CMD ["rackup", "--host", "0.0.0.0"]
+            </code></pre>
+          </section>
+          <section>
+            <h4>Avanced Dockerfile</h4>
+            <h5>USER</h5>
+            <pre><code data-trim data-noescape class="language-dockerfile" data-line-numbers="3,4">
+              FROM ruby:2.7.1
+
+              RUN useradd cachito
+              USER cachito
+
+              WORKDIR /app
+
+              COPY . ./
+
+              RUN gem install bundler:2.1.4 && bundler install
+
+              CMD ["rackup", "--host", "0.0.0.0"]
+            </code></pre>
+          </section>
+          <section>
+            <h4>Avanced Dockerfile</h4>
+            <h5>Otros comandos</h5>
+            <pre><code data-trim data-noescape class="language-dockerfile" data-line-numbers="1|3|5|7|9">
+              MAINTAINER Snappler   # DEPRECATED
+
+              LABEL maintainer=Snappler
+
+              ONBUILD RUN /usr/local/bin/python-build --dir /app/src
+
+              STOPSIGNAL 9
+
+              SHELL ["/bin/sh", "-c"]
+            </code></pre>
+          </section>
+        </section>
+
+        <!-- Multi-Stage Build -->
+        <section>
+          <section>
+            <h4>Multi-Stage Build</h4>
+            <h5>Example GoLang</h5>
+            <pre><code data-trim data-noescape class="language-dockerfile" data-line-numbers="1-5|7-11|10">
+              FROM golang:1.7.3
+              WORKDIR /go/src/github.com/alexellis/href-counter/
+              RUN go get -d -v golang.org/x/net/html
+              COPY app.go .
+              RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
+
+              FROM alpine:latest
+              RUN apk --no-cache add ca-certificates
+              WORKDIR /root/
+              COPY --from=0 /go/src/github.com/alexellis/href-counter/app .
+              CMD ["./app"]
+            </code></pre>
+          </section>
+          <section>
+            <h4>Multi-Stage Build</h4>
+            <h5>Example Frontend</h5>
+            <pre><code data-trim data-noescape class="language-dockerfile" data-line-numbers="1-8|10-16|1,13">
+              FROM node:14.1 as builder
+              WORKDIR /app
+
+              COPY package*.json ./
+              RUN npm ci
+
+              COPY ./ .
+              RUN npm run build
+
+              FROM nginx
+              RUN mkdir /app
+
+              COPY --from=builder /app/dist /app
+              COPY ./docker/nginx.conf /etc/nginx/nginx.conf
+
+              CMD ["nginx", "-g", "daemon off;"]
+            </code></pre>
+          </section>
+          <section>
+            <h4>Multi-Stage Build</h4>
+            <h5>Multi build modes</h5>
+            <pre><code data-trim data-noescape class="language-dockerfile" data-line-numbers="1-3|5-6|8-9|11-18">
+              FROM ruby:2.7.1 AS base
+              WORKDIR /app
+              RUN gem install bundler:2.1.4
+
+              FROM base AS stage-production
+              RUN bundle config set without 'staging development test'
+
+              FROM base AS stage-staging
+              RUN bundle config set without 'development test'
+
+              ARG BUILD_MODE=production
+
+              FROM stage-${BUILD_MODE} AS final-stage
+              RUN bundler install --jobs 20 --retry 5
+
+              COPY . ./
+
+              CMD ["rackup", "--host", "0.0.0.0"]
+            </code></pre>
+          </section>
+        </section>
+
+        <!-- Practice -->
+        <section>
+          <h2>Práctica</h2>
+        </section>
+      </div>
+    </div>
+
+  </body>
+</html>
+
